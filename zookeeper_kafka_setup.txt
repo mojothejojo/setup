@@ -1,0 +1,55 @@
+Setting up Kafka and Zookeeper
+1. the setting up of the zookeeper can be done in the following manner:
+=========================================================================
+1. download the binaries from the following address:
+http://mirrors.wuchna.com/apachemirror/zookeeper/zookeeper-3.4.13/
+
+2. untar by the following command:
+tar xzvf <path_to_tar_file>
+
+3. goto the /conf directory in the extracted package and copy the "zoo_sample.cfg" to the "zoo.cfg".
+
+4. modify the keys:
+
+bash -c "cat > /opt/zookeeper-3.4.9/conf/zoo.cfg <<EOL
+clientPort=2181 -- this needs to be different in all the files-- in our case we took this to be 2181,2182,2183
+tickTime=2000
+initLimit=10
+dataDir=/data/zookeeper --- this has to be the location of the file zoo.cfg 
+--inside the folder data will be the file myid
+server.1=127.0.0.1:2222:2223
+server.2=127.0.0.1:3333:3334
+server.3=127.0.0.1:4444:4445
+EOL"
+
+
+the directory structure will look as:
+<directory>/zoo.cfg
+<directory>/data/myid
+
+and in the "dataDir" we actually specify the location:
+<directory>/data
+
+and the zoo.cfg needs to be specified for the startup of the application
+
+5.
+Create the data directory and save the cfg file at that location:
+and save the data directory with the file name : myid
+-> the file myid will have the following text:(put any number that will be the id for the zookeeper)
+eg: simply write 1/2/3.. on the top of the file 
+the typical keys may be:
+
+
+starting of the zookeeper can be done using the following command:
+bin/zkServer.sh start-foreground <path-to-cfg-file:zoo.cfg> ie the complete path all the way upto the zoo.cfg file
+
+eg: bin/zkServer.sh start-foreground /Users/nitish/zookeeper_data/server1/zoo.cfg
+
+Starting up the client:
+the client for the zookeeper can be started by the following:
+bin/zkClient.sh -server 127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183
+
+
+
+-------------
+then the Kafka setup can be done in the following manner:
